@@ -8,7 +8,7 @@ import { ROUTES } from '../lib/constants'
 export default function Onboarding() {
     const navigate = useNavigate()
     const { user, loading: authLoading } = useAuth()
-    const { profile, isLoading: profileLoading, completeOnboarding, isOnboardingComplete } = useProfile(user?.id)
+    const { completeOnboarding, isOnboardingComplete } = useProfile(user?.id)
 
     const [fullName, setFullName] = useState('')
     const [birthdate, setBirthdate] = useState('')
@@ -23,7 +23,7 @@ export default function Onboarding() {
         }
     }, [user])
 
-    if (authLoading || profileLoading) {
+    if (authLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-milla-500"></div>

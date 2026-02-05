@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
-import type { Database, ReadingSection, ReadingContent } from '../types/database'
+import type { Database, ReadingSection } from '../types/database'
 
 type Reading = Database['public']['Tables']['readings']['Row']
 type Job = Database['public']['Tables']['jobs']['Row']

@@ -29,7 +29,7 @@ function LoadingScreen() {
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const { user, loading: authLoading } = useAuth()
-    const { profile, isLoading: profileLoading, isOnboardingComplete } = useProfile(user?.id)
+    const { isLoading: profileLoading, isOnboardingComplete } = useProfile(user?.id)
     const { isActive, isLoading: subLoading } = useSubscription(user?.id)
 
     if (authLoading || profileLoading || subLoading) {

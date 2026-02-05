@@ -32,6 +32,7 @@ export function useProfile(userId: string | undefined) {
 
             const { data, error } = await supabase
                 .from('profiles')
+                // @ts-ignore - Supabase type inference issue with update
                 .update(updates)
                 .eq('id', userId)
                 .select()

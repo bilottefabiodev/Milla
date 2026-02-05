@@ -9,11 +9,9 @@ import type { ReadingContent } from '../types/database'
 
 // Reading Card Component
 function ReadingCard({
-    section,
     content,
     isGenerating
 }: {
-    section: SectionKey
     content?: ReadingContent
     isGenerating: boolean
 }) {
@@ -116,10 +114,10 @@ function TabNavigation({
                         key={section}
                         onClick={() => onTabChange(section)}
                         className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${isActive
-                                ? 'bg-milla-500 text-white shadow-lg shadow-milla-500/30'
-                                : hasReading
-                                    ? 'bg-white/10 text-white hover:bg-white/20'
-                                    : 'bg-white/5 text-white/50 hover:bg-white/10'
+                            ? 'bg-milla-500 text-white shadow-lg shadow-milla-500/30'
+                            : hasReading
+                                ? 'bg-white/10 text-white hover:bg-white/20'
+                                : 'bg-white/5 text-white/50 hover:bg-white/10'
                             }`}
                     >
                         {SECTIONS[section]}
@@ -235,7 +233,6 @@ export default function Profile() {
                 {/* Active Reading */}
                 <div className="mt-6">
                     <ReadingCard
-                        section={activeTab}
                         content={currentReading?.content}
                         isGenerating={isGenerating && !currentReading}
                     />
