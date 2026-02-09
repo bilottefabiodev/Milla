@@ -15,6 +15,7 @@ import ResetPassword from './pages/ResetPassword'
 import Onboarding from './pages/Onboarding'
 import Paywall from './pages/Paywall'
 import MapaVida from './pages/MapaVida'
+import Previsoes from './pages/Previsoes'
 import Profile from './pages/Profile'
 
 // Loading component
@@ -105,6 +106,7 @@ export default function App() {
                 </ProtectedRoute>
             }>
                 <Route path={ROUTES.MAPA} element={<MapaVida />} />
+                <Route path={ROUTES.PREVISOES} element={<Previsoes />} />
                 <Route path={ROUTES.PROFILE} element={<Profile />} />
             </Route>
 

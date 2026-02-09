@@ -26,7 +26,7 @@ export default function Onboarding() {
     if (authLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-milla-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-500"></div>
             </div>
         )
     }
@@ -68,7 +68,7 @@ export default function Onboarding() {
                 <div className="card">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-milla-300 to-purple-300 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-serif font-bold text-gold-200 uppercase tracking-wide">
                             Bem-vindo à Milla
                         </h1>
                         <p className="text-white/60 mt-2">
@@ -143,7 +143,7 @@ export default function Onboarding() {
                         </div>
 
                         {error && (
-                            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm">
+                            <div className="bg-red-900/20 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm font-medium">
                                 {error}
                             </div>
                         )}

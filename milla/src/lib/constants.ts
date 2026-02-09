@@ -24,5 +24,6 @@ export const ROUTES = {
     ONBOARDING: '/onboarding',
     PAYWALL: '/paywall',
     MAPA: '/mapa',
+    PREVISOES: '/previsoes',
     PROFILE: '/perfil',
 } as const

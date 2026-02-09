@@ -33,16 +33,16 @@ export default function Login() {
                 <div className="card">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-milla-300 to-purple-300 bg-clip-text text-transparent">
+                        <h1 className="text-4xl font-serif font-bold text-gold-200 tracking-wider">
                             Milla
                         </h1>
-                        <p className="text-white/60 mt-2">Entre na sua conta</p>
+                        <p className="text-gold-300/60 mt-2 font-light">Entre na sua conta</p>
                     </div>
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-1">
+                            <label htmlFor="email" className="block text-sm font-medium text-gold-300 mb-1">
                                 Email
                             </label>
                             <input
@@ -57,7 +57,7 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-white/80 mb-1">
+                            <label htmlFor="password" className="block text-sm font-medium text-gold-300 mb-1">
                                 Senha
                             </label>
                             <input
@@ -90,13 +90,13 @@ export default function Login() {
                     <div className="mt-6 text-center space-y-2">
                         <Link
                             to={ROUTES.RESET_PASSWORD}
-                            className="text-milla-400 hover:text-milla-300 text-sm"
+                            className="text-gold-400 hover:text-gold-300 text-sm transition-colors"
                         >
                             Esqueci minha senha
                         </Link>
-                        <p className="text-white/60 text-sm">
+                        <p className="text-gold-300/60 text-sm">
                             Não tem conta?{' '}
-                            <Link to={ROUTES.SIGNUP} className="text-milla-400 hover:text-milla-300">
+                            <Link to={ROUTES.SIGNUP} className="text-gold-400 hover:text-gold-300 font-medium transition-colors">
                                 Criar conta
                             </Link>
                         </p>

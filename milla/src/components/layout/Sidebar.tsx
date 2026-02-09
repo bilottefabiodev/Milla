@@ -44,9 +44,9 @@ function NavItem({ to, icon, label }: NavItemProps) {
         <NavLink
             to={to}
             className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
-                    ? 'bg-gradient-to-r from-milla-500/20 to-purple-500/20 text-white border-l-4 border-milla-400'
-                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${isActive
+                    ? 'bg-gradient-to-r from-gold-500/20 to-gold-900/10 text-gold-100 border-l-2 border-gold-400 font-serif'
+                    : 'text-gold-300/70 hover:text-gold-100 hover:bg-gold-500/10'
                 }`
             }
         >
@@ -65,12 +65,12 @@ export default function Sidebar() {
     }
 
     return (
-        <aside className="fixed left-0 top-0 h-screen w-56 bg-black/30 backdrop-blur-xl border-r border-white/10 flex flex-col z-50">
+        <aside className="fixed left-0 top-0 h-screen w-56 bg-mystic-900/80 backdrop-blur-xl border-r border-gold-800/50 flex flex-col z-50">
             {/* Logo */}
-            <div className="p-6 border-b border-white/10">
+            <div className="p-6 border-b border-gold-800/50">
                 <div className="flex items-center gap-2">
-                    <span className="text-2xl">✨</span>
-                    <span className="text-xl font-bold bg-gradient-to-r from-milla-400 to-purple-400 bg-clip-text text-transparent">
+                    <span className="text-2xl text-gold-400">✨</span>
+                    <span className="text-xl font-bold font-serif bg-gradient-to-r from-gold-200 to-gold-400 bg-clip-text text-transparent uppercase tracking-widest">
                         Milla
                     </span>
                 </div>
@@ -79,16 +79,18 @@ export default function Sidebar() {
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2">
                 <NavItem to={ROUTES.MAPA} icon={<MapIcon />} label="Mapa da Vida" />
+                <NavItem to={ROUTES.PREVISOES} icon={<SparklesIcon />} label="Previsões" />
                 <NavItem to={ROUTES.PROFILE} icon={<UserIcon />} label="Perfil" />
             </nav>
 
             {/* Bottom section */}
             <div className="p-4 border-t border-white/10 space-y-2">
                 <button
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl 
-                     bg-gradient-to-r from-milla-500/30 to-purple-500/30 
-                     text-white hover:from-milla-500/40 hover:to-purple-500/40 
-                     transition-all duration-200"
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg 
+                     bg-gradient-to-r from-gold-600/20 to-gold-400/20 
+                     text-gold-100 hover:from-gold-600/30 hover:to-gold-400/30 
+                     border border-gold-500/30 font-serif
+                     transition-all duration-300 group"
                 >
                     <SparklesIcon />
                     <span className="font-medium">Premium</span>
@@ -105,8 +107,8 @@ export default function Sidebar() {
 
                 <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl 
-                     text-red-400/70 hover:text-red-400 hover:bg-red-500/10 
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg 
+                     text-red-400/70 hover:text-red-400 hover:bg-red-900/20 
                      transition-all duration-200"
                 >
                     <LogoutIcon />

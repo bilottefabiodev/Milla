@@ -20,7 +20,7 @@ export default function Paywall() {
     if (authLoading || profileLoading || subLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-milla-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-500"></div>
             </div>
         )
     }
@@ -71,10 +71,10 @@ export default function Paywall() {
             <div className="w-full max-w-3xl">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-milla-300 to-purple-300 bg-clip-text text-transparent">
+                    <h1 className="text-4xl font-serif font-bold text-gold-200 tracking-wider">
                         Desbloqueie seu Mapa da Vida
                     </h1>
-                    <p className="text-white/60 mt-4 text-lg">
+                    <p className="text-gold-100/60 mt-4 text-lg font-light">
                         Escolha um plano para acessar todas as suas interpretações personalizadas
                     </p>
                 </div>
@@ -84,26 +84,26 @@ export default function Paywall() {
                     {plans.map((plan) => (
                         <div
                             key={plan.id}
-                            className={`card relative ${plan.popular
-                                    ? 'border-milla-500 shadow-milla-500/20 shadow-xl'
-                                    : ''
+                            className={`card relative transition-all duration-300 ${plan.popular
+                                ? 'border-gold-500 shadow-gold-500/20 shadow-xl scale-105 z-10 bg-mystic-900/60'
+                                : 'border-gold-800/30 hover:border-gold-600/50 hover:bg-mystic-900/40'
                                 }`}
                         >
                             {plan.popular && (
                                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                    <span className="bg-gradient-to-r from-milla-500 to-purple-500 text-white text-xs font-semibold px-4 py-1 rounded-full">
+                                    <span className="bg-gradient-to-r from-gold-500 to-gold-700 text-white text-xs font-serif font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">
                                         Mais Popular
                                     </span>
                                 </div>
                             )}
 
                             <div className="text-center pt-4">
-                                <h2 className="text-xl font-semibold">{plan.name}</h2>
-                                <div className="mt-4">
-                                    <span className="text-4xl font-bold">{plan.price}</span>
-                                    <span className="text-white/60">{plan.period}</span>
+                                <h2 className="text-xl font-serif font-semibold text-gold-300">{plan.name}</h2>
+                                <div className="mt-4 text-gold-100">
+                                    <span className="text-4xl font-serif font-bold">{plan.price}</span>
+                                    <span className="text-gold-400/60 font-medium">{plan.period}</span>
                                 </div>
-                                <p className="text-white/60 mt-2">{plan.description}</p>
+                                <p className="text-gold-200/50 mt-2 text-sm">{plan.description}</p>
                             </div>
 
                             {/* Features */}
@@ -115,8 +115,8 @@ export default function Paywall() {
                                     'Propósito',
                                     'Manifestação Material',
                                 ].map((feature) => (
-                                    <li key={feature} className="flex items-center gap-2 text-white/80">
-                                        <svg className="w-5 h-5 text-milla-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <li key={feature} className="flex items-center gap-2 text-gold-100/80">
+                                        <svg className="w-5 h-5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                         {feature}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'motion/react'
 import { useAuth } from '../hooks/useAuth'
 import { useProfile } from '../hooks/useProfile'
 import { useReadings } from '../hooks/useReadings'
@@ -6,6 +7,8 @@ import { track } from '../lib/analytics'
 import { SECTIONS, SECTION_KEYS, type SectionKey } from '../lib/constants'
 import { getCardImageUrl, getLocalCardImageUrl } from '../lib/supabase'
 import type { ReadingContent } from '../types/database'
+import { LogOut, Sparkles, AlertCircle, CheckCircle } from 'lucide-react'
+import { cn } from '../lib/utils'
 
 // Reading Card Component
 function ReadingCard({
@@ -19,18 +22,12 @@ function ReadingCard({
 
     if (isGenerating) {
         return (
-            <div className="card animate-pulse">
-                <div className="flex items-start gap-6">
-                    <div className="w-24 h-36 bg-white/10 rounded-lg shrink-0"></div>
-                    <div className="flex-1 space-y-4">
-                        <div className="h-6 bg-white/10 rounded w-3/4"></div>
-                        <div className="h-4 bg-white/10 rounded w-full"></div>
-                        <div className="h-4 bg-white/10 rounded w-5/6"></div>
-                        <div className="h-4 bg-white/10 rounded w-4/6"></div>
-                    </div>
-                </div>
-                <div className="mt-4 text-center text-white/40 text-sm">
-                    ✨ Gerando sua interpretação...
+            <div className="card-glass p-8 animate-pulse flex flex-col items-center justify-center space-y-4 min-h-[400px]">
+                <div className="w-32 h-48 bg-gold-400/10 rounded-xl" />
+                <div className="h-6 w-48 bg-gold-400/10 rounded" />
+                <div className="h-4 w-64 bg-white/5 rounded" />
+                <div className="text-gold-400/60 font-serif tracking-widest text-sm animate-pulse">
+                    Revelando Arcano...
                 </div>
             </div>
         )
@@ -38,8 +35,8 @@ function ReadingCard({
 
     if (!content) {
         return (
-            <div className="card text-center py-12">
-                <p className="text-white/60">Interpretação ainda não disponível</p>
+            <div className="card-glass p-12 text-center text-white/40">
+                <p className="font-serif italic">Selecione uma área para ver sua leitura</p>
             </div>
         )
     }
@@ -49,47 +46,52 @@ function ReadingCard({
         : getCardImageUrl(content.arcano)
 
     return (
-        <div className="card space-y-6">
-            {/* Header with Card Image */}
-            <div className="flex items-start gap-6">
-                <div className="shrink-0">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col md:flex-row gap-8"
+        >
+            {/* Left: Card Image */}
+            <div className="w-full md:w-1/3 flex justify-center md:block">
+                <div className="relative group perspective-1000 w-48 h-72 md:w-full md:max-w-xs md:h-96">
+                    <div className="absolute inset-0 bg-gold-500/20 blur-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-700" />
                     <img
                         src={imageUrl}
                         alt={content.arcano}
                         onError={() => setImgError(true)}
-                        className="w-24 h-36 object-cover rounded-lg shadow-lg shadow-black/30"
+                        className="relative z-10 w-full h-full object-cover rounded-xl shadow-2xl border border-gold-500/20"
                     />
                 </div>
+            </div>
+
+            {/* Right: Content */}
+            <div className="flex-1 space-y-6">
                 <div>
-                    <div className="text-milla-400 text-sm font-medium">{content.arcano}</div>
-                    <h3 className="text-2xl font-bold mt-1">{content.titulo}</h3>
+                    <span className="text-xs font-serif text-gold-500 uppercase tracking-[0.2em] mb-1 block">Arcano Regente</span>
+                    <h2 className="text-3xl md:text-4xl font-serif text-gold-100 mb-2">{content.titulo}</h2>
+                    <div className="h-px w-24 bg-gradient-to-r from-gold-500/50 to-transparent" />
+                </div>
+
+                <div className="bg-black/20 p-6 rounded-xl border border-white/5">
+                    <h3 className="text-sm font-serif text-gold-200 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-gold-500" />
+                        Interpretação
+                    </h3>
+                    <p className="text-white/80 leading-relaxed font-sans">{content.interpretacao}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-red-950/10 p-4 rounded-lg border border-red-500/10">
+                        <h4 className="text-xs font-serif text-red-400 uppercase tracking-widest mb-2">Sombra</h4>
+                        <p className="text-white/60 text-sm leading-relaxed">{content.sombra}</p>
+                    </div>
+                    <div className="bg-emerald-950/10 p-4 rounded-lg border border-emerald-500/10">
+                        <h4 className="text-xs font-serif text-emerald-400 uppercase tracking-widest mb-2">Conselho</h4>
+                        <p className="text-white/60 text-sm leading-relaxed">{content.conselho}</p>
+                    </div>
                 </div>
             </div>
-
-            {/* Interpretation */}
-            <div>
-                <h4 className="text-sm font-semibold text-white/60 uppercase tracking-wide mb-2">
-                    Interpretação
-                </h4>
-                <p className="text-white/90 leading-relaxed">{content.interpretacao}</p>
-            </div>
-
-            {/* Shadow */}
-            <div className="bg-red-500/5 border border-red-500/10 rounded-xl p-4">
-                <h4 className="text-sm font-semibold text-red-400/80 uppercase tracking-wide mb-2">
-                    🌑 Sombra
-                </h4>
-                <p className="text-white/80 leading-relaxed">{content.sombra}</p>
-            </div>
-
-            {/* Advice */}
-            <div className="bg-milla-500/5 border border-milla-500/10 rounded-xl p-4">
-                <h4 className="text-sm font-semibold text-milla-400 uppercase tracking-wide mb-2">
-                    ✨ Conselho
-                </h4>
-                <p className="text-white/80 leading-relaxed">{content.conselho}</p>
-            </div>
-        </div>
+        </motion.div>
     )
 }
 
@@ -104,7 +106,7 @@ function TabNavigation({
     readingSections: Set<SectionKey>
 }) {
     return (
-        <div className="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 scrollbar-hide">
+        <div className="flex overflow-x-auto gap-3 pb-4 pt-2 -mx-4 px-4 scrollbar-thin scrollbar-thumb-gold-900 scrollbar-track-transparent">
             {SECTION_KEYS.map((section) => {
                 const isActive = activeTab === section
                 const hasReading = readingSections.has(section)
@@ -113,16 +115,16 @@ function TabNavigation({
                     <button
                         key={section}
                         onClick={() => onTabChange(section)}
-                        className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${isActive
-                            ? 'bg-milla-500 text-white shadow-lg shadow-milla-500/30'
-                            : hasReading
-                                ? 'bg-white/10 text-white hover:bg-white/20'
-                                : 'bg-white/5 text-white/50 hover:bg-white/10'
-                            }`}
+                        className={cn(
+                            "relative shrink-0 px-5 py-2.5 rounded-sm text-xs font-serif uppercase tracking-widest transition-all duration-300 border border-transparent",
+                            isActive
+                                ? "bg-gold-500/10 text-gold-200 border-gold-500/30 shadow-[0_0_15px_rgba(212,175,55,0.1)]"
+                                : "text-white/40 hover:text-gold-200/80 hover:bg-white/5"
+                        )}
                     >
                         {SECTIONS[section]}
                         {hasReading && !isActive && (
-                            <span className="ml-1 text-xs">✓</span>
+                            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-gold-500 rounded-full" />
                         )}
                     </button>
                 )
@@ -153,85 +155,97 @@ export default function Profile() {
 
     // Build set of sections that have readings
     const readingSections = new Set(readings.map(r => r.section))
-
     const currentReading = getReadingBySection(activeTab)
 
     return (
-        <div className="min-h-screen">
-            {/* Header */}
-            <header className="sticky top-0 z-10 bg-milla-950/80 backdrop-blur-xl border-b border-white/10">
-                <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold bg-gradient-to-r from-milla-300 to-purple-300 bg-clip-text text-transparent">
-                            Milla
-                        </h1>
-                    </div>
+        <div className="min-h-screen bg-mystic-950 text-gold-100 pb-12">
+            <div className="absolute inset-0 bg-[url('/bg-mystic.png')] bg-cover opacity-10 pointer-events-none fixed" />
 
-                    <div className="flex items-center gap-4">
-                        {profile && (
-                            <span className="text-white/60 text-sm hidden sm:block">
-                                {profile.full_name}
-                            </span>
-                        )}
-                        <button
-                            onClick={signOut}
-                            className="text-white/60 hover:text-white text-sm"
-                        >
-                            Sair
-                        </button>
-                    </div>
+            {/* Header */}
+            <header className="relative z-10 px-6 py-6 border-b border-white/5 bg-mystic-950/50 backdrop-blur-md">
+                <div className="max-w-6xl mx-auto flex justify-between items-center">
+                    <h1 className="text-2xl font-serif text-gold-100 tracking-widest">Milla</h1>
+                    <button
+                        onClick={signOut}
+                        className="text-white/40 hover:text-red-400 transition-colors duration-300 flex items-center gap-2 text-xs uppercase tracking-widest"
+                    >
+                        <LogOut className="w-4 h-4" /> Sair
+                    </button>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="max-w-4xl mx-auto px-4 py-8">
-                {/* Profile Header */}
-                <div className="card mb-8">
-                    <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-milla-400 to-purple-500 flex items-center justify-center text-2xl font-bold">
-                            {profile?.full_name?.charAt(0)?.toUpperCase() || '?'}
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-semibold">{profile?.full_name}</h2>
-                            <p className="text-white/60 text-sm">
-                                {profile?.birthdate && new Date(profile.birthdate).toLocaleDateString('pt-BR')}
-                            </p>
+            <main className="max-w-6xl mx-auto px-6 py-12 relative z-10">
+
+                {/* Astral Seal Header */}
+                <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
+                    {/* Seal Avatar */}
+                    <div className="relative group">
+                        {/* Rotating Rings */}
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            className="absolute -inset-4 rounded-full border border-gold-500/30 border-dashed"
+                        />
+                        <motion.div
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                            className="absolute -inset-1 rounded-full border border-gold-400/20"
+                        />
+
+                        <div className="w-32 h-32 rounded-full bg-mystic-900 border-2 border-gold-500/50 flex items-center justify-center relative z-10 overflow-hidden shadow-[0_0_30px_rgba(212,175,55,0.15)]">
+                            <div className="text-4xl font-serif text-gold-200">
+                                {profile?.full_name?.charAt(0)?.toUpperCase()}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Status */}
-                    {isGenerating && (
-                        <div className="mt-4 bg-milla-500/10 border border-milla-500/20 rounded-xl p-4 flex items-center gap-3">
-                            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-milla-500"></div>
-                            <span className="text-milla-300">Gerando suas interpretações...</span>
-                        </div>
-                    )}
+                    {/* Profile Info */}
+                    <div className="text-center md:text-left space-y-2">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="text-gold-500 font-serif text-xs uppercase tracking-[0.3em]"
+                        >
+                            Viajante Astral
+                        </motion.div>
+                        <h2 className="text-4xl font-serif text-gold-100 tracking-wide">{profile?.full_name}</h2>
+                        <p className="text-white/40 text-sm font-mono uppercase">
+                            {profile?.birthdate && new Date(profile.birthdate).toLocaleDateString('pt-BR')}
+                        </p>
 
-                    {jobStatus === 'failed' && (
-                        <div className="mt-4 bg-red-500/10 border border-red-500/20 rounded-xl p-4">
-                            <p className="text-red-400">Ocorreu um erro ao gerar suas interpretações.</p>
-                            <button onClick={refetch} className="text-red-300 underline text-sm mt-2">
-                                Tentar novamente
-                            </button>
+                        {/* Status Indicators */}
+                        <div className="pt-4 flex flex-wrap gap-4 justify-center md:justify-start">
+                            {isGenerating && (
+                                <div className="flex items-center gap-2 text-gold-400 animate-pulse">
+                                    <Sparkles className="w-4 h-4" />
+                                    <span className="text-xs uppercase tracking-widest">Interpretando estrelas...</span>
+                                </div>
+                            )}
+                            {hasAllReadings() && (
+                                <div className="flex items-center gap-2 text-emerald-400/80">
+                                    <CheckCircle className="w-4 h-4" />
+                                    <span className="text-xs uppercase tracking-widest">Mapa Completo</span>
+                                </div>
+                            )}
+                            {jobStatus === 'failed' && (
+                                <div className="flex items-center gap-2 text-red-400/80 cursor-pointer hover:text-red-300 transition-colors" onClick={refetch}>
+                                    <AlertCircle className="w-4 h-4" />
+                                    <span className="text-xs uppercase tracking-widest">Falha na conexão. Tentar novamente.</span>
+                                </div>
+                            )}
                         </div>
-                    )}
-
-                    {hasAllReadings() && (
-                        <div className="mt-4 bg-green-500/10 border border-green-500/20 rounded-xl p-4 flex items-center gap-3">
-                            <span className="text-green-400">✓ Seu Mapa da Vida está completo!</span>
-                        </div>
-                    )}
+                    </div>
                 </div>
 
-                {/* Tabs */}
-                <TabNavigation
-                    activeTab={activeTab}
-                    onTabChange={handleTabChange}
-                    readingSections={readingSections}
-                />
+                {/* Tabs & Content */}
+                <div className="space-y-8">
+                    <TabNavigation
+                        activeTab={activeTab}
+                        onTabChange={handleTabChange}
+                        readingSections={readingSections}
+                    />
 
-                {/* Active Reading */}
-                <div className="mt-6">
                     <ReadingCard
                         content={currentReading?.content}
                         isGenerating={isGenerating && !currentReading}

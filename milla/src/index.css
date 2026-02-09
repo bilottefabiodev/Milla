@@ -3,37 +3,111 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 2%;
+    /* Deep Mystic #050505 */
+    --foreground: 46 45% 95%;
+    /* Gold 100 */
+
+    --card: 0 0% 5%;
+    --card-foreground: 46 45% 95%;
+
+    --popover: 0 0% 5%;
+    --popover-foreground: 46 45% 95%;
+
+    --primary: 45 65% 52%;
+    /* Solar Gold #D4AF37 */
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 45 20% 20%;
+    --secondary-foreground: 46 45% 95%;
+
+    --muted: 0 0% 10%;
+    --muted-foreground: 45 10% 60%;
+    /* Mystic 400 */
+
+    --accent: 45 65% 52%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 45 20% 20%;
+    /* Muted Gold */
+    --input: 45 20% 20%;
+    --ring: 45 65% 52%;
+
+    --radius: 0.75rem;
+  }
+
+  /* Scrollbar Customization */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #050505;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2415;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+  }
+
   body {
-    @apply bg-gradient-to-br from-milla-950 via-purple-900 to-indigo-950 min-h-screen text-white antialiased;
+    @apply bg-mystic-950 text-gold-100 font-sans antialiased min-h-screen selection:bg-gold-500/30 selection:text-white;
+    background-image: radial-gradient(circle at 50% 0%, #1a160d 0%, #050505 60%);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif text-gold-200 tracking-wide;
   }
 }
 
 @layer components {
+
+  /* Grimorie Style Typography */
+  .text-grimorie-header {
+    @apply font-serif text-gold-100 tracking-[0.15em] uppercase border-b border-gold-800/30 pb-2 mb-4;
+  }
+
+  .text-grimorie-body {
+    @apply font-sans text-gold-100/80 leading-relaxed text-lg;
+  }
+
+  /* Buttons */
   .btn-primary {
-    @apply bg-gradient-to-r from-milla-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl 
-           hover:from-milla-400 hover:to-purple-500 transition-all duration-300 
-           shadow-lg shadow-milla-500/25 hover:shadow-milla-500/40
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply relative px-6 py-3 bg-gold-400 text-mystic-950 font-serif font-bold uppercase tracking-widest text-sm rounded-sm transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
   }
-  
+
+  .btn-primary:hover {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+  }
+
   .btn-secondary {
-    @apply bg-white/10 backdrop-blur-sm text-white font-medium py-3 px-6 rounded-xl 
-           border border-white/20 hover:bg-white/20 transition-all duration-300;
+    @apply px-6 py-3 bg-transparent border border-gold-800 text-gold-300 font-serif font-medium uppercase tracking-widest text-sm rounded-sm hover:border-gold-500 hover:text-gold-200 hover:bg-gold-900/10 transition-all duration-300;
   }
-  
+
+  /* Cards */
+  .card-glass {
+    @apply bg-black/40 backdrop-blur-xl border border-white/5 rounded-xl shadow-xl;
+  }
+
   .input-field {
-    @apply w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl 
-           px-4 py-3 text-white placeholder-white/50
-           focus:outline-none focus:ring-2 focus:ring-milla-500 focus:border-transparent
-           transition-all duration-300;
-  }
-  
-  .card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 
-           shadow-xl shadow-black/20;
-  }
-  
-  .card-glow {
-    @apply card hover:border-milla-500/50 hover:shadow-milla-500/10 transition-all duration-500;
+    @apply w-full bg-black/20 border border-gold-900/50 rounded-lg px-4 py-3 text-gold-100 focus:border-gold-500/50 focus:ring-1 focus:ring-gold-500/20 focus:outline-none placeholder:text-white/20 transition-all duration-300;
   }
 }

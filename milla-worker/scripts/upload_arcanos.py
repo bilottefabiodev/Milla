@@ -30,6 +30,14 @@ ARCANO_NAMES = {
     "arcano_a_justica": "a_justica",
     "arcano_o_eremita": "o_eremita",
     "arcano_a_forca": "a_forca",
+    "arcano_o_louco": "o_louco",
+    "arcano_o_pendurado": "o_pendurado",
+    "arcano_a_morte": "a_morte",
+    "arcano_a_temperanca": "a_temperanca",
+    "arcano_a_torre": "a_torre",
+    "arcano_a_lua": "a_lua",
+    "arcano_o_julgamento": "o_julgamento",
+    "arcano_o_mundo": "o_mundo",
 }
 
 

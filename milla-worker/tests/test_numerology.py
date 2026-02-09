@@ -22,154 +22,73 @@ class TestReduceToArcano:
         for i in range(1, 10):
             assert reduce_to_arcano(i) == i
     
-    def test_10_to_22_unchanged(self):
-        """Numbers 10-22 should remain unchanged."""
-        for i in range(10, 23):
-            assert reduce_to_arcano(i) == i
+    def test_10_reduces_to_1(self):
+        """10 -> 1+0 = 1"""
+        assert reduce_to_arcano(10) == 1
     
-    def test_23_reduces(self):
-        """23 -> 2+3 = 5"""
-        assert reduce_to_arcano(23) == 5
-    
-    def test_38_reduces(self):
-        """38 -> 3+8 = 11"""
-        assert reduce_to_arcano(38) == 11
-    
-    def test_99_reduces(self):
-        """99 -> 9+9 = 18"""
-        assert reduce_to_arcano(99) == 18
-    
+    def test_11_unchanged(self):
+        """11 is a Master Number"""
+        assert reduce_to_arcano(11) == 11
+        
+    def test_12_reduces_to_3(self):
+        """12 -> 1+2 = 3"""
+        assert reduce_to_arcano(12) == 3
+        
+    def test_20_reduces_to_2(self):
+        """20 -> 2+0 = 2"""
+        assert reduce_to_arcano(20) == 2
+        
+    def test_22_unchanged(self):
+        """22 is a Master Number"""
+        assert reduce_to_arcano(22) == 22
+        
     def test_large_number_reduces(self):
-        """100 -> 1+0+0 = 1"""
-        assert reduce_to_arcano(100) == 1
-    
-    def test_zero_returns_22(self):
-        """0 should return 22 (O Louco)."""
-        assert reduce_to_arcano(0) == 22
-    
-    def test_negative_returns_22(self):
-        """Negative numbers should return 22 (O Louco)."""
-        assert reduce_to_arcano(-5) == 22
+        """1982 -> 20 -> 2"""
+        assert reduce_to_arcano(1982) == 2
 
 
 class TestGetArcanoName:
     """Tests for get_arcano_name function."""
     
-    def test_all_arcanos_mapped(self):
-        """All 22 arcanos should have names."""
-        for i in range(1, 23):
-            name = get_arcano_name(i)
-            assert name in ARCANOS_MAIORES.values()
-    
-    def test_specific_arcanos(self):
-        """Test specific arcano mappings."""
+    def test_reduced_mapping(self):
+        """Should map reduced numbers correctly."""
         assert get_arcano_name(1) == "O Mago"
+        assert get_arcano_name(10) == "O Mago"  # 10 -> 1
         assert get_arcano_name(5) == "O Hierofante"
-        assert get_arcano_name(10) == "A Roda da Fortuna"
-        assert get_arcano_name(13) == "A Morte"
         assert get_arcano_name(22) == "O Louco"
-    
-    def test_large_number_reduces_first(self):
-        """Large numbers should be reduced before lookup."""
-        # 23 -> 5 -> O Hierofante
-        assert get_arcano_name(23) == "O Hierofante"
 
 
 class TestCalculateSectionNumber:
     """Tests for calculate_section_number function."""
     
     @pytest.fixture
-    def sample_date(self):
-        """Sample birthdate: May 15, 1990"""
-        return date(1990, 5, 15)
+    def user_date(self):
+        """User's birthdate from MapaMilla.md: 14/09/1982"""
+        return date(1982, 9, 14)
     
-    def test_missao_da_alma_uses_day(self, sample_date):
-        """Missão da Alma uses day of birth."""
-        result = calculate_section_number(sample_date, "missao_da_alma")
-        # Day 15 -> reduce -> 15 (valid as-is)
-        # But need to check actual reduction: 15 stays 15
-        assert result == 15
-    
-    def test_personalidade_uses_month(self, sample_date):
-        """Personalidade uses month of birth."""
-        result = calculate_section_number(sample_date, "personalidade")
-        # Month 5 -> 5
-        assert result == 5
-    
-    def test_destino_uses_full_sum(self, sample_date):
-        """Destino uses sum of all date digits."""
-        result = calculate_section_number(sample_date, "destino")
-        # 1+9+9+0+0+5+1+5 = 30 -> 3+0 = 3
-        # Actually: 15051990 -> 1+5+0+5+1+9+9+0 = 30 -> 3
-        assert result == 3
-    
-    def test_proposito_uses_year_halves(self, sample_date):
-        """Propósito uses year calculation."""
-        result = calculate_section_number(sample_date, "proposito")
-        # 1990 -> 19 + 90 = 109 -> 1+0+9 = 10
-        assert result == 10
-    
-    def test_manifestacao_uses_day_plus_month(self, sample_date):
-        """Manifestação Material uses day + month."""
-        result = calculate_section_number(sample_date, "manifestacao_material")
-        # 15 + 5 = 20
-        assert result == 20
-    
-    def test_december_birthday(self):
-        """Test with December date."""
-        dec_date = date(1985, 12, 25)
+    def test_full_user_matrix(self, user_date):
+        """Verify the exact values from the User's example."""
+        # A (Missão) = 14 -> 5
+        assert calculate_section_number(user_date, "missao_da_alma") == 5
         
-        # Day 25 -> stays 25 -> reduces to 7 (2+5)
-        assert calculate_section_number(dec_date, "missao_da_alma") == 7
+        # B (Personalidade) = 09 -> 9
+        assert calculate_section_number(user_date, "personalidade") == 9
         
-        # Month 12 -> stays 12
-        assert calculate_section_number(dec_date, "personalidade") == 12
-
-
-class TestGetSectionReadingData:
-    """Tests for get_section_reading_data function."""
+        # C (Destino) = 1982 -> 1+9+8+2 = 20 -> 2
+        assert calculate_section_number(user_date, "destino") == 2
+        
+        # D (Propósito) = A+B+C = 5+9+2 = 16 -> 7
+        assert calculate_section_number(user_date, "proposito") == 7
+        
+        # E (Material) = A+D = 5+7 = 12 -> 3
+        assert calculate_section_number(user_date, "manifestacao_material") == 3
     
-    def test_returns_tuple(self):
-        """Should return tuple of (number, arcano_name)."""
-        result = get_section_reading_data(date(1990, 5, 15), "missao_da_alma")
+    def test_master_numbers_preserved(self):
+        """Ensure 11 and 22 are preserved if they appear."""
+        # Date creating an 11: 29th -> 2+9=11
+        date_11 = date(1980, 1, 29)
+        assert calculate_section_number(date_11, "missao_da_alma") == 11
         
-        assert isinstance(result, tuple)
-        assert len(result) == 2
-        assert isinstance(result[0], int)
-        assert isinstance(result[1], str)
-    
-    def test_number_matches_arcano(self):
-        """Number should correspond to the arcano name."""
-        number, arcano = get_section_reading_data(date(1990, 5, 15), "personalidade")
-        
-        # Month 5 -> 5 -> O Hierofante
-        assert number == 5
-        assert arcano == "O Hierofante"
-
-
-class TestEdgeCases:
-    """Edge case tests."""
-    
-    def test_first_day_of_year(self):
-        """Test January 1st."""
-        date_val = date(2000, 1, 1)
-        
-        assert calculate_section_number(date_val, "missao_da_alma") == 1
-        assert calculate_section_number(date_val, "personalidade") == 1
-    
-    def test_last_day_of_year(self):
-        """Test December 31st."""
-        date_val = date(1999, 12, 31)
-        
-        # Day 31 -> 4 (3+1)
-        assert calculate_section_number(date_val, "missao_da_alma") == 4
-        
-        # Month 12 -> 12
-        assert calculate_section_number(date_val, "personalidade") == 12
-    
-    def test_recent_year(self):
-        """Test with 2025 year."""
-        date_val = date(2025, 6, 15)
-        
-        # Year: 20 + 25 = 45 -> 4+5 = 9
-        assert calculate_section_number(date_val, "proposito") == 9
+        # Date creating 22: 22nd
+        date_22 = date(1980, 1, 22)
+        assert calculate_section_number(date_22, "missao_da_alma") == 22

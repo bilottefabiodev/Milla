@@ -61,13 +61,15 @@ def reduce_to_arcano(number: int) -> int:
         22
     """
     if number <= 0:
-        return 22  # O Louco for edge cases
+        return 22
     
-    while number > 22:
-        # Sum digits
+    # Master numbers and single digits are allowed
+    valid_numbers = {11, 22}
+    
+    while number > 9 and number not in valid_numbers:
         number = sum(int(d) for d in str(number))
-    
-    return number if number > 0 else 22
+        
+    return number
 
 
 def get_arcano_name(number: int) -> str:
@@ -106,33 +108,40 @@ def calculate_section_number(birthdate: date, section: SectionType) -> int:
     month = birthdate.month
     year = birthdate.year
     
+    # Calculate base numbers (A, B, C)
+    # A - Missão da Alma (Day)
+    a = reduce_to_arcano(day)
+    
+    # B - Personalidade (Month)
+    b = reduce_to_arcano(month)
+    
+    # C - Destino (Year digits sum)
+    # Note: Logic is sum of digits of year (1+9+8+2=20 -> 2)
+    year_sum = sum(int(d) for d in str(year))
+    c = reduce_to_arcano(year_sum)
+    
+    # D - Propósito (A + B + C)
+    d = reduce_to_arcano(a + b + c)
+    
+    # E - Manifestação Material (A + D)
+    e = reduce_to_arcano(a + d)
+    
     if section == "missao_da_alma":
-        # Day of birth
-        raw = day
+        return a
     
     elif section == "personalidade":
-        # Month of birth
-        raw = month
+        return b
     
     elif section == "destino":
-        # Full sum: all digits of date
-        raw = sum(int(d) for d in f"{day:02d}{month:02d}{year}")
+        return c
     
     elif section == "proposito":
-        # Year calculation: first 2 + last 2 digits
-        year_str = str(year)
-        first_half = int(year_str[:2])
-        second_half = int(year_str[2:])
-        raw = first_half + second_half
+        return d
     
     elif section == "manifestacao_material":
-        # Day + Month
-        raw = day + month
+        return e
     
-    else:
-        raw = 22  # Default to O Louco
-    
-    return reduce_to_arcano(raw)
+    return 22  # Default
 
 
 def get_section_reading_data(
